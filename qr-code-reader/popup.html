@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>みんなのWeb QRコードリーダー</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+</head>
+
+<body>
+  <div class="content">
+    <!-- スクリーンショットボタン -->
+    <h3 class="text-h3">みんなのWeb QRコードリーダー</h3>
+    <p class="text">操作中のブラウザ画面上にあるQRコードに反応します。</p>
+    <button id="captureBtn">QRコードを読み取る</button>
+    <div class="sub-content">
+      <!-- ラベル -->
+      <label class="label-text">検出結果</label>
+      <!-- もしQRコードを見つからなかったらエラーを表示する -->
+      <p id="qrError"></p>
+      <div class="grid">
+        <!-- 取得URL -->
+        <div class="text">
+          <textarea id="result" class="column" rows="10" cols="75" maxlength="4096"></textarea>
+        </div>
+        <!-- コピー箇所 -->
+        <div class="copy">
+          <button title="コピー" id="copyBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard"
+              viewBox="0 0 16 16" aria-label="URLをコピー">
+              <path
+                d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+              <path
+                d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <p class="warning">※ QRコードが近すぎたり、複数QRコードがある場合は正しく動作しない可能性があります。</p>
+  </div>
+  <canvas id="canvas" style="display:none;"></canvas>
+  <script src="jsQR.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>

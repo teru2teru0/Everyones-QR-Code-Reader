@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "みんなのWeb QRコードリーダー",
+  "version": "1.0",
+  "description": "Web上のQRコードを読み取る拡張機能。画面内にあるQRコードを読み取ります。",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "icon/16.png",
+    "32": "icon/32.png",
+    "48": "icon/48.png",
+    "64": "icon/64.png",
+    "128": "icon/128.png"
+  }
+}
