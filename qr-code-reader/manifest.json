@@ -4,9 +4,7 @@
   "version": "1.0",
   "description": "Web上のQRコードを読み取る拡張機能。画面内にあるQRコードを読み取ります。",
   "permissions": [
-    "activeTab",
-    "scripting",
-    "tabs"
+    "activeTab"
   ],
   "host_permissions": [
     "<all_urls>"
