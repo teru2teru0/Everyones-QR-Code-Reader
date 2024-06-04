@@ -1,18 +1,23 @@
 document.getElementById('captureBtn').addEventListener('click', async () => {
   // 初期化
-  document.getElementById("qrError").innerText = '';
+  const errorElement = document.getElementById("qrError");
+  errorElement.innerText = '';
   const captureBtn = document.getElementById("captureBtn");
   const baseCaptureBtnValue = captureBtn.textContent;
-  captureBtn.disabled = true
-  captureBtn.textContent = "読み取り中..."
+  captureBtn.disabled = true;
+  captureBtn.textContent = "読み取り中...";
+
   await new Promise(resolve => setTimeout(resolve, 400)); // 連続スクリーンショットができないので400msの遅延を入れる
+
   try {
-    // メッセージを送信して 現在表示されているスクリーンショットを取得
+    // メッセージを送信して現在表示されているスクリーンショットを取得
     const result = await chrome.runtime.sendMessage({ action: 'capture' });
+
     if (result.screenshotUrl) {
       await new Promise((resolve, reject) => {
         const img = new Image();
         img.src = result.screenshotUrl;
+
         img.onload = () => {
           const canvas = document.getElementById('canvas');
           const context = canvas.getContext('2d', { alpha: false, willReadFrequently: true });
@@ -23,35 +28,40 @@ document.getElementById('captureBtn').addEventListener('click', async () => {
           // QRコードを読み取る部分の選択とデコード
           const imageData = context.getImageData(0, 0, canvas.width, canvas.height); // 適切な座標とサイズに変更
           const code = jsQR(imageData.data, canvas.width, canvas.height);
+
           if (code) {
-            const text_decoder = new TextDecoder('shift-jis');
-            const decodeData = text_decoder.decode(Uint8Array.from(code.binaryData).buffer);
-            document.getElementById('result').value = decodeData;
+            // バイナリーデータを保存
+            const binaryData = new Uint8Array(code.binaryData);
+            const base64String = btoa(String.fromCharCode.apply(null, binaryData));
+            document.getElementById('qrCodeBase64BinaryData').value = base64String;
+
+            updateEncodedData();
           } else {
-            document.getElementById("qrError").innerText = 'QRコードが見つかりませんでした';
+            errorElement.innerText = 'QRコードが見つかりませんでした';
           }
           resolve();
         };
 
         img.onerror = (err) => {
-          document.getElementById("qrError").innerText = `${err}\n画像が読み込めませんでした。`;
+          errorElement.innerText = `画像が読み込めませんでした。エラー: ${err}`;
           console.error('Image load error:', err);
-        }
+        };
       });
     } else {
-      document.getElementById("qrError").innerText = 'スクリーンショットを取得できませんでした';
+      errorElement.innerText = 'スクリーンショットを取得できませんでした';
     }
   } catch (error) {
-    document.getElementById("qrError").innerText = `${error}\n不明なエラー。`;
+    errorElement.innerText = `不明なエラー: ${error}`;
     console.error('Error:', error);
   } finally {
-    captureBtn.textContent = baseCaptureBtnValue
-    captureBtn.disabled = false
+    captureBtn.textContent = baseCaptureBtnValue;
+    captureBtn.disabled = false;
   }
 });
 
 document.getElementById('copyBtn').addEventListener('click', () => {
   const resultText = document.getElementById('result').value;
+
   if (resultText) {
     navigator.clipboard.writeText(resultText).then(() => {
       window.alert(`${resultText}\nをコピーしました。`);
@@ -63,3 +73,29 @@ document.getElementById('copyBtn').addEventListener('click', () => {
     window.alert('コピーするテキストがありません');
   }
 });
+
+// ラジオボタンの選択変更イベントリッスン
+document.querySelectorAll('input[name="encoding"]').forEach((radio) => {
+  radio.addEventListener('change', updateEncodedData);
+});
+
+// エンコードデータを更新して表示
+function updateEncodedData() {
+  const base64String = document.getElementById('qrCodeBase64BinaryData').value;
+  if (!base64String) {
+    document.getElementById('qrError').innerText = 'QRコードデータが見つかりませんでした。';
+    return;
+  }
+  const qrCodeBinaryData = Uint8Array.from(atob(base64String), c => c.charCodeAt(0));
+  const encoding = document.querySelector('input[name="encoding"]:checked').value;
+  let textDecoder;
+
+  if (encoding === 'utf-8') {
+    textDecoder = new TextDecoder('utf-8');
+  } else if (encoding === 'shift-jis') {
+    textDecoder = new TextDecoder('shift-jis');
+  }
+
+  const decodedData = textDecoder.decode(qrCodeBinaryData.buffer);
+  document.getElementById('result').value = decodedData;
+}

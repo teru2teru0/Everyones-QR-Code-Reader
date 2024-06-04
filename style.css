@@ -5,18 +5,21 @@ body {
   font-family: "Source Sans Pro", sans-serif;
   font-size: inherit
 }
+
 * {
   color: #606c76;
   box-sizing: border-box;
   font-family: "Source Sans Pro", sans-serif;
   font-size: inherit
 }
+
 @font-face {
   font-family: YuGothicM;
   font-weight: normal;
   src: local("YuGothic-Medium"), local("Yu Gothic Medium"),
     local("YuGothic-Regular");
 }
+
 @font-face {
   font-family: YuGothicM;
   font-weight: bold;
@@ -26,6 +29,7 @@ body {
 .content {
   margin: 16px 0;
 }
+
 .sub-content {
   margin: 24px 0 0 0;
 }
@@ -65,9 +69,11 @@ body {
   font-size: 12px;
   position: relative;
 }
+
 .label-text {
   font-size: 12px;
 }
+
 #text-h3 {
   margin: 0;
   color: var(--color-secondary);
@@ -110,9 +116,11 @@ body {
   display: flex;
   align-items: center;
 }
+
 #copyBtn:hover {
   background-color: #2f22a3;
 }
+
 #copyBtn:focus {
   outline: none;
   box-shadow: 0 0 0 4px #cbd6ee;
@@ -123,4 +131,8 @@ body {
   margin-right: 5px;
   width: 20px;
   height: auto;
+}
+
+.encoding {
+  font-size: 12px;
 }

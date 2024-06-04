@@ -11,18 +11,18 @@
 
 <body>
   <div class="content">
-    <!-- スクリーンショットボタン -->
     <h3 class="text-h3">みんなのWeb QRコードリーダー</h3>
     <p class="text">操作中のブラウザ画面上にあるQRコードに反応します。</p>
+    <!-- スクリーンショットボタン -->
     <button id="captureBtn">QRコードを読み取る</button>
     <div class="sub-content">
-      <!-- ラベル -->
       <label class="label-text">検出結果</label>
       <!-- もしQRコードを見つからなかったらエラーを表示する -->
       <p id="qrError"></p>
       <div class="grid">
         <!-- 取得URL -->
         <div class="text">
+          <input type="hidden" id="qrCodeBase64BinaryData" />
           <textarea id="result" class="column" rows="10" cols="75" maxlength="4096"></textarea>
         </div>
         <!-- コピー箇所 -->
@@ -36,6 +36,14 @@
                 d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
             </svg>
           </button>
+        </div>
+      </div>
+      <!-- 読み取り結果をutf-8やshift-jisに変換できるエンコードボタン-->
+      <div class="sub-content">
+        <label class="label-text">読み取り結果の文字コード</label>
+        <div>
+          <label class="encoding"><input type="radio" name="encoding" value="utf-8" checked> UTF-8</label>
+          <label class="encoding"><input type="radio" name="encoding" value="shift-jis"> Shift-JIS</label>
         </div>
       </div>
     </div>
