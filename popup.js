@@ -74,6 +74,32 @@ document.getElementById('copyBtn').addEventListener('click', () => {
   }
 });
 
+// 取得したURLを新規タブで表示
+document.getElementById("createTabButton").addEventListener("click", async () => {
+    const resultText = document.getElementById("result").value;
+
+    if (!resultText) {
+      window.alert("QRコードが読み取られていません。");
+      return;
+    }
+
+    try {
+      const currentTab = await new Promise((resolve, reject) => {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          if (tabs.length > 0) {
+            resolve(tabs[0]);
+          } else {
+            reject(new Error("現在のタブを取得できませんでした。"));
+          }
+        });
+      });
+      chrome.tabs.create({ url: resultText, index: currentTab.index + 1 });
+    } catch (err) {
+      console.error("Error :", err);
+      window.alert("新しいタブを開けませんでした。もう一度お試しください。");
+    }
+  });
+
 // ラジオボタンの選択変更イベントリッスン
 document.querySelectorAll('input[name="encoding"]').forEach((radio) => {
   radio.addEventListener('change', updateEncodedData);
