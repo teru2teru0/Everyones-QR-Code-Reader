@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "みんなのWeb QRコードリーダー",
-  "version": "1.1",
+  "version": "1.2",
   "description": "Web上のQRコードを読み取る拡張機能。画面内にあるQRコードを読み取ります。",
   "permissions": [
     "activeTab"
